@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <!-- jquery cdn -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+<body>
+<form action="/update" method="post" name="updateForm">
+  <input type="hidden" name="id" th:value="${boardUpdate.id}">
+  writer: <input type="text" name="boardWriter" th:value="${boardUpdate.boardWriter}" readonly> <br>
+<!--  pass: <input type="text" name="boardPass" id="boardPass"> <br>-->
+  title: <input type="text" name="boardTitle" th:value="${boardUpdate.boardTitle}"> <br>
+  contents: <textarea name="boardContents" cols="30" rows="10" th:text="${boardUpdate.boardContents}"></textarea> <br>
+  <input type="hidden" name="boardHits" th:value="${boardUpdate.boardHits}">
+  <input type="submit" value="글수정">
+</form>
+</body>
+</html>
