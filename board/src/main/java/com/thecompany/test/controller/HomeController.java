@@ -3,7 +3,7 @@ package com.thecompany.test.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.thecompany.test.service.BoardService;
+// import com.thecompany.test.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeController {
 	
-	private final BoardService boardService;
+	// private final BoardService boardService;
 	
 	// ("/") 주소로 맵핑 Root주소
 	@GetMapping("/")

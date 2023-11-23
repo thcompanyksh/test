@@ -72,6 +72,8 @@ public class BoardEntity extends BaseEntity{
         boardEntity.setBoardTitle(boardDTO.getBoardTitle());
         boardEntity.setBoardContents(boardDTO.getBoardContents());
         boardEntity.setBoardHits(boardDTO.getBoardHits());
+        // 엔티티에서 FileAttached를 가져옴
+        // boardEntity.setFileAttached(boardDTO.getFileAttached());
         System.out.println("BoardEntity toUpdateEntity");
         return boardEntity;
 	}

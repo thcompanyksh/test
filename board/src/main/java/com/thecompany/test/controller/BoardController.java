@@ -1,7 +1,6 @@
 package com.thecompany.test.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -59,7 +58,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/update")
-	public String update(@ModelAttribute BoardDTO boardDTO, Model model) {
+	public String update(@ModelAttribute BoardDTO boardDTO, Model model){
 		BoardDTO board = boardService.update(boardDTO);
         model.addAttribute("board", board);
         System.out.println("controller update");
@@ -85,7 +84,7 @@ public class BoardController {
 	public String delete(@PathVariable long id) {
 		boardService.delete(id);
 		System.out.println("Controller delete");
-		return "redirect:/";
+		return "redirect:/main/paging";
 	}
 	
 	@GetMapping("/main/paging")

@@ -47,9 +47,35 @@ public class BoardService {
             Long savedId = boardRepository.save(boardEntity).getId();
             BoardEntity board = boardRepository.findById(savedId).get();
             BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(board, originalFilename, storedFileName);
+            
             boardFileRepository.save(boardFileEntity);
             System.out.println("BoardService save"+boardFileEntity);
 		}
+	}
+	
+	@Transactional
+	public BoardDTO findById(long id) {
+		Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
+		if (optionalBoardEntity.isPresent()){
+			BoardEntity boardEntity = optionalBoardEntity.get();
+			BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
+			System.out.println("BoardService findById");
+			System.out.println("boardService " + boardDTO.getOriginalFileName());
+			System.out.println("boardService " + boardDTO.getStoredFileName());
+			System.out.println("boardE " + boardEntity);
+//			System.out.println("boardFE " + boardFileEntity);
+			return boardDTO;
+		} else {
+			return null;
+		}
+	}
+	
+	public BoardDTO update(BoardDTO boardDTO){
+		BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+//		BoardFileEntity boardFileEntity = BoardFileEntity.toBoardFileEntity(boardEntity, boardDTO.getOriginalFileName(), boardDTO.getStoredFileName() );
+		boardRepository.save(boardEntity);
+		System.out.println("BoardService update");
+		return findById(boardDTO.getId());
 	}
 	
 	@Transactional
@@ -67,26 +93,6 @@ public class BoardService {
 	public void updateHits(long id) {
 		boardRepository.updateHits(id);
 		System.out.println("BoardService updateHits");
-	}
-	
-	@Transactional
-	public BoardDTO findById(long id) {
-		Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
-		if (optionalBoardEntity.isPresent()){
-			BoardEntity boardEntity = optionalBoardEntity.get();
-			BoardDTO boardDTO = BoardDTO.toBoardDTO(boardEntity);
-			System.out.println("BoardService findById");
-			return boardDTO;
-		} else {
-			return null;
-		}
-	}
-	
-	public BoardDTO update(BoardDTO boardDTO) {
-		BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
-		boardRepository.save(boardEntity);
-		System.out.println("BoardService update");
-		return findById(boardDTO.getId());
 	}
 	
 	public void delete(long id) {
