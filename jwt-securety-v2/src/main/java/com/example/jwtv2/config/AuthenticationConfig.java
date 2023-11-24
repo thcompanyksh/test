@@ -22,10 +22,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthenticationConfig {
 	
-    private final MemberService memberService;
-
     @Value("${jwt.secret}")
     private String secretKey;
+    
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
     
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -33,14 +36,17 @@ public class AuthenticationConfig {
                 .httpBasic().disable()
                 .csrf().disable()
                 .cors().and()
+                .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/v2/members/login").permitAll()
+                .antMatchers("/api/v2/members/join").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v2/**").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

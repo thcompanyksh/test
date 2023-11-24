@@ -1,17 +1,18 @@
-package com.example.jwtv1.service.impl;
-
-import com.example.jwtv1.dto.MemberSignInResquestDto;
-import com.example.jwtv1.dto.MemberSignUpRequestDto;
-import com.example.jwtv1.entity.Member;
-import com.example.jwtv1.jwt.JwtUtil;
-import com.example.jwtv1.repository.MemberRepository;
-import com.example.jwtv1.service.MemberService;
+package com.thecompany.test.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.thecompany.test.dto.MemberDTO;
+import com.thecompany.test.dto.MemberSignInResquestDto;
+import com.thecompany.test.dto.MemberSignUpRequestDto;
+import com.thecompany.test.entity.Member;
+import com.thecompany.test.jwt.JwtUtil;
+import com.thecompany.test.repository.MemberRepository;
+import com.thecompany.test.service.MemberService;
 
 import java.util.Map;
 

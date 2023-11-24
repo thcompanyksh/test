@@ -28,7 +28,7 @@ public class MemberController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@ModelAttribute MemberSignInResquestDto request) throws Exception {
+    public ResponseEntity<JwtResponse> login(@RequestBody MemberSignInResquestDto request) throws Exception {
 
         String accessToken = memberService.signIn(request);
         String refreshToken = refreshTokenService.createRefreshToken(request.getEmail()).getToken();
@@ -42,12 +42,12 @@ public class MemberController {
 
     @PostMapping("/join")
     @ResponseStatus(HttpStatus.OK)
-    public Long join(@Valid @ModelAttribute MemberSignUpRequestDto request) throws Exception {
+    public Long join(@Valid @RequestBody MemberSignUpRequestDto request) throws Exception {
         return memberService.signUp(request);
     }
 
     @PostMapping("/refreshToken")
-    public ResponseEntity<JwtResponse> refreshToken(@ModelAttribute RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<JwtResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return refreshTokenService.findByToken(refreshTokenRequest.getToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getMember)

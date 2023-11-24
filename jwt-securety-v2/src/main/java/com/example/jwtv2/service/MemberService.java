@@ -1,19 +1,12 @@
 package com.example.jwtv2.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import com.example.jwtv2.dto.MemberSignInResquestDto;
+import com.example.jwtv2.dto.MemberSignUpRequestDto;
 
-import com.example.jwtv2.jwt.JwtUtil;
+public interface MemberService {
 
-@Service
-public class MemberService {
+	public String signIn(MemberSignInResquestDto requestDto) throws Exception;
 	
-	@Value("${jwt.secret}")
-	private String secretKey;
+	public Long signUp(MemberSignUpRequestDto requestDto) throws Exception;
 	
-	private Long expiredMs = 1000 * 60 * 60l;
-	
-	public String login(String username) {
-		return JwtUtil.createJwt(username, secretKey, expiredMs);
-	}
 }

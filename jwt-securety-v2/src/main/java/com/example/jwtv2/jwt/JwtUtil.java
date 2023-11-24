@@ -7,9 +7,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtUtil {
+	
     public static String getUserName(String token, String secretKey){
         String res = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("userName", String.class);
+                .getBody().get("email", String.class);
         System.out.println("res : " + res);
         return res;
     }
@@ -19,9 +20,9 @@ public class JwtUtil {
                 .getBody().getExpiration().before(new Date());
     }
 
-    public static String createJwt(String username, String secretKey, Long expiredMs){
+    public static String createJwt(String email, String secretKey, Long expiredMs){
         Claims claims = Jwts.claims();
-        claims.put("userName", username);
+        claims.put("email", email);
 
         return Jwts.builder()
                 .setClaims(claims)

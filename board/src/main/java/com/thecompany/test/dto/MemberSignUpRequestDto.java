@@ -1,12 +1,12 @@
-package com.example.jwtv1.dto;
-
-import com.example.jwtv1.entity.Member;
-import com.example.jwtv1.entity.Role;
+package com.thecompany.test.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
+
+import com.thecompany.test.entity.Member;
+import com.thecompany.test.entity.Role;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -34,7 +34,7 @@ public class MemberSignUpRequestDto {
 
     private String checkedPassword;
 
-    private com.example.jwtv1.entity.Role role;
+    private Role role;
     
 	public MemberSignUpRequestDto() {
 		

@@ -1,39 +1,22 @@
 package com.thecompany.test.service;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
-import com.thecompany.test.dto.MemberDTO;
-import com.thecompany.test.entity.MemberEntity;
-import com.thecompany.test.repository.MemberRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@RequiredArgsConstructor
-public class MemberService {
-	
-	private final MemberRepository memberRepository;
-	
-	public void join(MemberDTO memberDTO) {
-		MemberEntity memberEntity = MemberEntity.toSaveEntity(memberDTO);
-		memberRepository.save(memberEntity);
-		System.out.println("BoardService save");
-	}
-	
-	public MemberDTO login(MemberDTO memberDTO) {
-		Optional<MemberEntity> memberId =  memberRepository.findByMemberId(memberDTO.getMemberId());
-		if(memberId.isPresent()) {
-			MemberEntity memberEntity = memberId.get();
-			if(memberEntity.getPass().equals(memberDTO.getPass())) {
-				MemberDTO dto = MemberDTO.toMemberDTO(memberEntity);
-				return dto;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+import com.thecompany.test.dto.MemberSignInResquestDto;
+import com.thecompany.test.dto.MemberSignUpRequestDto;
+
+public interface MemberService {
+
+
+    public String signIn(MemberSignInResquestDto requestDto) throws Exception;
+
+    public Long signUp(MemberSignUpRequestDto requestDto) throws Exception;
+
+    public String generateToken(String username);
+
+
 }

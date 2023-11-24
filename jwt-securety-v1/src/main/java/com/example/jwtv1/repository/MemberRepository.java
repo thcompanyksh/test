@@ -1,7 +1,8 @@
 package com.example.jwtv1.repository;
 
-import com.example.jwtv1.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.jwtv1.entity.Member;
 
 import java.util.Optional;
 
