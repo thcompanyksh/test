@@ -1,16 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" 
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<head>
 		<meta charset="UTP-8">
 		<title>thecompany</title>
+		<th:block th:fragment="script">
+		  <script type="text/javascript" th:src="@{js/jquery-3.7.1.min.js}"></script>
+<!--		  <script th:src="@{https://unpkg.com/axios/dist/axios.min.js}"></script>-->
+		 </th:block>
 	</head>
 	
 	<body>
-		<form method="post" name="form">
-		email : <input type="text" name="email"><br>
-		PASS : <input type="password" name="pass"><br>
-		<button type=submit formaction="/login" value="login">로그인</button>
-		<button type=submit formaction="/member/joinForm" value="join">회원가입</button>
-		</form>
+		<th:block layout:fragment="content">
+		    <h2>로그인</h2>
+		    <div>
+		        <form >
+		            <div>
+		                <div>아이디</div>
+		                <input id="email" type="text" name="email" />
+		            </div>
+		            <div>
+		                <div>비밀번호</div>
+		                <input id="pass" type="password" name="pass" />
+		            </div>
+		            <input class="btn-submit" type="submit" value="로그인">
+		        </form>
+		    </div>
+		
+		</th:block>
+			<th:block layout:fragment="script">
+    <script type="text/javascript">
+		$(function () {
+            $('.btn-submit').click((e) => {
+                const email = $('#email').val();
+                const pass = $('#pass').val();
+
+                // if (email == '') {
+                //    alert('아이디를 입력해주세요');
+                //    e.preventDefault();
+                //}
+                
+                //if (pass == '') {
+                //    alert('패스워드를 입력해주세요');
+                //    e.preventDefault();
+                //}
+               alert(pass)
+                if (email != '' && pass !='') {
+                    const path = 'http://localhost:8081/api/login';
+                    const json = JSON.stringify({
+                        'username': email,
+                        'password': pass,
+                    });
+                     alert(json)
+                    $.ajax({
+                        url: path,
+                        type: 'POST',
+                        contentType: "application/json; charset=UTF-8",
+                        data: json,
+                        success: function(result) {
+							 alert('로그인 성공')
+						},
+						error: function(req, status, error) {
+							 alert('로그인 성11공')
+						},
+                    })
+                }
+            });
+        });
+    </script>
+	</th:block>
 	</body>
+	<script th:inline="javascript">
+    function logout(){
+        if (localStorage.getItem('id') != null) {
+            localStorage.removeItem('id');
+            alert('로그아웃 완료');
+        } else {
+            alert('로그인하세요!');
+        }
+    }
+	</script>
+	
+<!--	<script>-->
+<!--		const joinReq = () => {-->
+<!--			location.href = "/member/joinForm";-->
+<!--		}-->
+		
+<!--	</script>-->
 </html>

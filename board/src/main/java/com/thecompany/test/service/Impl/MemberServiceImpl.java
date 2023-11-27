@@ -1,7 +1,11 @@
 package com.thecompany.test.service.Impl;
 
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,7 @@ import com.thecompany.test.jwt.JwtUtil;
 import com.thecompany.test.repository.MemberRepository;
 import com.thecompany.test.service.MemberService;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -60,12 +65,23 @@ public class MemberServiceImpl implements MemberService {
 
         Member member = memberRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일 입니다."));
+        System.out.println(requestDto);
         if(!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())){
             throw new IllegalArgumentException("잘못된 비밀번호 입니다.");
         }
 
         return JwtUtil.createJwt(member.getNickname(), secretKey, expiredMs);
     }
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		Member member = memberRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
+		return User.builder()
+				.username(username)
+				.password(member.getPassword())
+				.roles(member.getRole().name())
+				.build();
+	}
 
 
 }

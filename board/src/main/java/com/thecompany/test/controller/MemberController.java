@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ import com.thecompany.test.service.Impl.MemberServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
-@RestController
+@Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
@@ -34,14 +35,15 @@ public class MemberController {
     private final RefreshTokenService refreshTokenService;
     
 //    회원 가입 폼
-    @PostMapping("/joinForm")
+    @GetMapping("/joinForm")
     public String joinForm() {
-    	return "join";
+    	System.out.println("join form");
+    	return "member/join";
     }
     
     @PostMapping("/join")
-    @ResponseStatus(HttpStatus.OK)
-    public String join(@Valid @RequestBody MemberSignUpRequestDto request) throws Exception {
+    // @ResponseStatus(HttpStatus.OK)
+    public String join(MemberSignUpRequestDto request) throws Exception {
     	memberService.signUp(request);
     	return "redirect:/";
     }
@@ -59,10 +61,8 @@ public class MemberController {
         return ResponseEntity.ok().body(jwtResponse);
     }
     
-    
-
     @PostMapping("/refreshToken")
-    public ResponseEntity<JwtResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+    public ResponseEntity<JwtResponse> refreshToken(RefreshTokenRequest refreshTokenRequest) {
         return refreshTokenService.findByToken(refreshTokenRequest.getToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getMember)

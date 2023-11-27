@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTP-8">
+		<title>thecompany</title>
+	</head>
+	
+	<body>
+		<form >
+		email : <input type="text" name="email"><br>
+		PASS : <input type="password" name="pass"><br>
+		</form>
+		<button type=submit formaction="/login" >로그인</button>
+		<button type="button" onclick="joinReq()" >회원가입</button>
+	</body>
+	
+		<script>
+		const joinReq = () => {
+			location.href = "/api/v1/members/join1";
+		}
+	</script>
+	
+	
+</html>

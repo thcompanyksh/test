@@ -33,11 +33,12 @@ public class AuthenticationConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .httpBasic().disable()
+//                .httpBasic().disable()
                 .csrf().disable()
                 .cors().and()
                 .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/v1/members/login").permitAll()
                 .antMatchers("/api/v1/members/join").permitAll()
@@ -50,7 +51,4 @@ public class AuthenticationConfig {
                 .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
-
 }

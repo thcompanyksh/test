@@ -1,33 +1,30 @@
-package com.example.jwtv1.controller;
+package com.thecompany.test.controller;
 
-import com.example.jwtv1.dto.JwtResponse;
-import com.example.jwtv1.dto.MemberSignInResquestDto;
-import com.example.jwtv1.dto.MemberSignUpRequestDto;
-import com.example.jwtv1.dto.RefreshTokenRequest;
-import com.example.jwtv1.entity.RefreshToken;
-import com.example.jwtv1.jwt.JwtUtil;
-import com.example.jwtv1.service.MemberService;
-import com.example.jwtv1.service.RefreshTokenService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.thecompany.test.dto.JwtResponse;
+import com.thecompany.test.dto.MemberSignInResquestDto;
+import com.thecompany.test.dto.RefreshTokenRequest;
+import com.thecompany.test.entity.RefreshToken;
+import com.thecompany.test.service.MemberService;
+import com.thecompany.test.service.RefreshTokenService;
+
 import lombok.RequiredArgsConstructor;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-@Controller
-@RequestMapping("/api/v1/members")
+@RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
-public class MemberController {
-
-    private final MemberService memberService;
-
+public class AuthController {
+	
+	private final MemberService memberService;
     private final RefreshTokenService refreshTokenService;
-
+	
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody MemberSignInResquestDto request) throws Exception {
 
@@ -37,22 +34,11 @@ public class MemberController {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
-
+        System.out.println("request" + request);
         return ResponseEntity.ok().body(jwtResponse);
+        
     }
     
-    @GetMapping("/join1")
-    public String joinForm() {
-    	System.out.println("join form");
-    	return "join";
-    }
-    
-    @PostMapping("/join")
-    @ResponseStatus(HttpStatus.OK)
-    public Long join(@Valid @RequestBody MemberSignUpRequestDto request) throws Exception {
-        return memberService.signUp(request);
-    }
-
     @PostMapping("/refreshToken")
     public ResponseEntity<JwtResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return refreshTokenService.findByToken(refreshTokenRequest.getToken())
@@ -68,5 +54,4 @@ public class MemberController {
                         "Refresh token is not in database!"
                 ));
     }
-
 }

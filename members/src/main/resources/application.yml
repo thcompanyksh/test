@@ -1,11 +1,11 @@
 #서버 포트 설정
 server:
- port: 8081
+ port: 8082
  
 spring:
  datasource:
   driver-class-name: org.mariadb.jdbc.Driver
-  url: jdbc:mariadb://localhost:3306/thecompany?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+  url: jdbc:mariadb://localhost:3306/member?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
   username: root
   password: 1234
  thymeleaf:
@@ -13,7 +13,7 @@ spring:
   prefix: classpath:/templates/
   
  jpa:
-  database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  database-platform: org.hibernate.dialect.MariaDB103Dialect
   open-in-view: false
   show-sql: true
   hibernate:
@@ -21,9 +21,7 @@ spring:
   properties:
    hibernate:
     format_sql: true
-jwt:
- secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-  
+    
 #logging:
 # level:
 #  org.hibernate.SQL: debug
