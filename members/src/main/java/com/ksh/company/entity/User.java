@@ -1,37 +1,28 @@
-package com.thecompany.test.entity;
+package com.ksh.company.entity;
 
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.thecompany.test.dto.MemberDTO;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Entity
-@Getter
+@Table(name = "user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
-public class MemberEntity extends BaseEntity implements UserDetails{
+@Getter
+@Entity
+public class User implements UserDetails {
+	
 	@Id
 	@GeneratedValue
 	@Column(name="id", updatable = false)
@@ -43,17 +34,8 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 	@Column(name = "password")
 	private String password;
 	
-	@Column
-	private String nickname;
-	
-	@Column
-	private int age;
-	
-	@Column
-	private String role;
-	
 	@Builder
-	public MemberEntity(MemberDTO memberDTO, String auth) {
+	public User(String email, String password, String auth) {
 		this.email = email;
 		this.password = password;
 	}
@@ -92,5 +74,6 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
+	
 	
 }

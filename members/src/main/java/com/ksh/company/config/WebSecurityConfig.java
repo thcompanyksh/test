@@ -1,4 +1,4 @@
-package com.thecompany.test.config;
+package com.ksh.company.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,50 +15,39 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
-public class AuthenticationConfig {
+public class WebSecurityConfig {
 	
 	private final UserDetailsService userService;
 	
-	@Bean
-	public WebSecurityCustomizer configure() {
-		return (web) -> web.ignoring()
-				// .requestMatchers(toH2Console())
-				.antMatchers("/static/**");
-	}
+//	@Bean
+//	public WebSecurityCustomizer configure() {
+//		return (web) -> web.ignoring()
+//				// .requestMatchers(toH2Console())
+//				.requestMatchers("/static/**");
+//	}
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 				.authorizeHttpRequests()
-				.antMatchers("/", "/signup", "/join","/login").permitAll()
+				.requestMatchers("/", "/signup", "/user", "/login").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.formLogin()
-				.loginPage("/")
+				.loginPage("/login")
 				.defaultSuccessUrl("/home")
 				.usernameParameter("email")
 				.and()
 				.logout()
-				.logoutSuccessUrl("/")
+				.logoutSuccessUrl("/login")
 				.invalidateHttpSession(true)
 				.and()
 				.csrf().disable()
 				.build();
 	}
 	
-//	@Bean
-//	public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception{
-//		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//		
-//		daoAuthenticationProvider.setUserDetailsService(userService);
-//		daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
-//		
-//		return daoAuthenticationProvider;
-//	}
-	
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+</head>
+<body>
+	<h1>로그인 성공!</h1>
+		<h2>메인페이지<h2>
+	<div>
+		<span th:text="|${userInfo.email}님 환영합니다.|"></span>
+	<br>
+	<span th:if="${userInfo.password} != null "
+	 		th:text="|${userInfo.password} 비밀번호 주의|"></span>
+	<br>	 		
+	<button onclick="saveReq()">글작성</button></p>
+	<button onclick="listReq()">글리스트</button></p>
+	<button onclick="infoReq()">내정보조회</button></p>
+	<button onclick="location.href='/logout'">로그아웃</button></p>
+</body>
+	<script>
+		const saveReq = () => {
+			location.href = "/write";
+		}
+		const listReq = () => {
+			location.href = "/main/paging";
+		}
+		
+	</script>
+</html>

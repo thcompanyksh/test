@@ -1,79 +1,42 @@
 package com.thecompany.test.controller;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
-import com.thecompany.test.dto.JwtResponse;
-import com.thecompany.test.dto.MemberSignInResquestDto;
-import com.thecompany.test.dto.MemberSignUpRequestDto;
-import com.thecompany.test.dto.RefreshTokenRequest;
-import com.thecompany.test.entity.RefreshToken;
+import com.thecompany.test.dto.MemberDTO;
 import com.thecompany.test.service.MemberService;
-import com.thecompany.test.service.RefreshTokenService;
-// import com.thecompany.test.dto.MemberDTO;
-import com.thecompany.test.service.Impl.MemberServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 	
 	private final MemberService memberService;
-    private final RefreshTokenService refreshTokenService;
-    
-//    회원 가입 폼
-    @GetMapping("/joinForm")
-    public String joinForm() {
-    	System.out.println("join form");
-    	return "member/join";
-    }
-    
-    @PostMapping("/join")
-    // @ResponseStatus(HttpStatus.OK)
-    public String join(MemberSignUpRequestDto request) throws Exception {
-    	memberService.signUp(request);
-    	return "redirect:/";
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody MemberSignInResquestDto request) throws Exception {
-
-        String accessToken = memberService.signIn(request);
-        String refreshToken = refreshTokenService.createRefreshToken(request.getEmail()).getToken();
-        JwtResponse jwtResponse = JwtResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-
-        return ResponseEntity.ok().body(jwtResponse);
-    }
-    
-    @PostMapping("/refreshToken")
-    public ResponseEntity<JwtResponse> refreshToken(RefreshTokenRequest refreshTokenRequest) {
-        return refreshTokenService.findByToken(refreshTokenRequest.getToken())
-                .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getMember)
-                .map(member -> {
-                        String accessToken = memberService.generateToken(member.getEmail());
-                        return ResponseEntity.ok().body(JwtResponse.builder()
-                                .accessToken(accessToken)
-                                .refreshToken(refreshTokenRequest.getToken())
-                                .build());
-                }).orElseThrow(() -> new RuntimeException(
-                        "Refresh token is not in database!"
-                ));
-    }
+	
+	@GetMapping("/home")
+	public String home(Model model,@AuthenticationPrincipal User userInfo) throws Exception {
+		model.addAttribute("userInfo", userInfo);
+		return "main";
+	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "index";
+	}
+	
+	@GetMapping("/signup")
+	public String signup() {
+		return "/member/join";
+	}
+	
+	@PostMapping("/join")
+	public String signup(MemberDTO request) {
+		memberService.save(request);
+		return "redirect:/";
+	}
 }
