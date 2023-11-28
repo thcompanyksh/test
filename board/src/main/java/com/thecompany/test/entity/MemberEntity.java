@@ -53,7 +53,7 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 	private String role;
 	
 	@Builder
-	public MemberEntity(MemberDTO memberDTO, String auth) {
+	public MemberEntity(String email, String password , String auth) {
 		this.email = email;
 		this.password = password;
 	}
