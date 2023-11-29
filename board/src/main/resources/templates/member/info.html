@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>thecompany</title>
+	</head>
+	<h2> 내 정보 </h2>
+	<body>
+		<form action="/info" method="post">
+		email : <input type="text" name="email" th:value="|${info.email}|" readonly><br>
+		닉네임 : <input type="text" name="nickname" th:value="${info.nickname}"><br>
+		나이 : <input type="text" name="age" th:value="${info.age}"><br>
+		비밀번호 : <input type="password" name="password"><br>
+<!--		비밀번호확인 : <input type="password" name="checkedPassword" value="${info.nickname}"><br>-->
+		<input type="submit" value="수정">
+		</from>
+	</body>
+</html>

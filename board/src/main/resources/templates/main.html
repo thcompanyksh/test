@@ -3,27 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>main</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 </head>
 <body>
-<!--<table border="1">-->
-<!--    <tr>-->
-<!--        <th>id</th>-->
-<!--        <th>title</th>-->
-<!--        <th>writer</th>-->
-<!--        <th>date</th>-->
-<!--        <th>hits</th>-->
-<!--    </tr>-->
-<!--    <tr th:each="board: ${boardList}">-->
-<!--        <td th:text="${board.id}"></td>-->
-<!--        <td><a th:href="@{|/board/${board.id}|}" th:text="${board.boardTitle}"></a></td>-->
-<!--        <td th:text="${board.boardWriter}"></td>-->
-<!--        <td th:text="*{#temporals.format(board.boardCreatedTime, 'yyyy-MM-dd HH:mm:ss')}"></td>-->
-<!--        <td th:text="${board.boardHits}"></td>-->
-<!--    </tr>-->
-<!--</table>-->
+		<h2>메인페이지<h2>
+	<div>
+		<span th:text="|이메일 ${userInfo.email}입니다.|"></span>
+	<br>
+		<span th:text="|닉네임 ${userInfo.nickname}님 환영합니다.|"></span>
+	<br>
+			<span th:text="|나이 ${userInfo.age}살 입니다.|"></span>
+	<br>
 	<button onclick="saveReq()">글작성</button></p>
 	<button onclick="listReq()">글리스트</button></p>
-	<button onclick="infoReq()">내정보조회</button></p>
+	<button onclick="location.href='/info'">내정보수정</button></p>
 	<button onclick="location.href='/logout'">로그아웃</button></p>
 </body>
 	<script>
@@ -33,6 +26,10 @@
 		const listReq = () => {
 			location.href = "/main/paging";
 		}
+<!--		const updateReq = () => {-->
+<!--			const id = [[${userInfo.id}]];-->
+<!--			location.href = "/info/" + id;-->
+<!--		}-->
 		
 	</script>
 </html>

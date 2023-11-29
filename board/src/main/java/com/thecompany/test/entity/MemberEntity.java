@@ -28,6 +28,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
@@ -52,10 +53,24 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 	@Column
 	private String role;
 	
-	@Builder
-	public MemberEntity(String email, String password , String auth) {
-		this.email = email;
-		this.password = password;
+	public MemberEntity(MemberDTO memberDTO, String auth) {
+		MemberEntity memberEntity = new MemberEntity();
+		memberEntity.setEmail(memberDTO.getEmail());
+		memberEntity.setPassword(memberDTO.getPassword());
+		memberEntity.setNickname(memberDTO.getNickname());
+		memberEntity.setAge(memberDTO.getAge());
+	}
+	
+//	public static MemberEntity update(MemberDTO memberDTO) {
+//		MemberEntity memberEntity = new MemberEntity();
+//		// memberEntity.setEmail(memberDTO.getEmail());
+//		memberEntity.setNickname(memberDTO.getNickname());
+//		memberEntity.setAge(memberDTO.getAge());
+//		return memberEntity;
+//	}
+	
+	public void update(String nickname) {
+		this.nickname = nickname;
 	}
 	
 	@Override
