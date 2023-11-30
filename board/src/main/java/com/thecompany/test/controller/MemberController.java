@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.thecompany.test.dto.MemberDTO;
 import com.thecompany.test.dto.MemberUpdateDTO;
 import com.thecompany.test.entity.MemberEntity;
+import com.thecompany.test.repository.MemberRepository;
 import com.thecompany.test.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,10 +27,11 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	
 	private final MemberService memberService;
+	private final MemberRepository memberRepository;
 	
 	@GetMapping("/home")
 	public String home(Model model,@AuthenticationPrincipal MemberEntity userInfo) throws Exception {
-		model.addAttribute("userInfo", userInfo);
+		model.addAttribute("userInfo",  memberRepository.findById(userInfo.getId()).get());
 		return "main";
 	}
 	
@@ -44,25 +46,24 @@ public class MemberController {
 	}
 	
 	@PostMapping("/join")
-	public String signup(MemberDTO request) {
+	public String signup(MemberDTO request) throws Exception{
 		memberService.save(request);
 		return "redirect:/";
 	}
 	
 	@GetMapping("/info")
+	// @AuthenticationPrincipal로 데이터 가져 올시 최초 로그인 정보 이기 때문에 DB에서 변경되어도 기존 정보 가지고있음
 	public String info(Model model, @AuthenticationPrincipal MemberEntity memberEntity) {
-		model.addAttribute("info", memberEntity);
+		// 기존 정보 갱신을 위해 DB에서 데이터를 새로 가져옴
+		model.addAttribute("info", memberRepository.findById(memberEntity.getId()).get());
 		return "/member/info";
 	}
 	
 	@PostMapping("/info")
-	public String update(@Valid MemberUpdateDTO memberUpdateDTO, Errors errors, Model model, Authentication auth){
-//		if(errors.hasErrors()) {
-			model.addAttribute("member", memberUpdateDTO);
-//			return "/member/info";
-//		}
-		
-		memberService.update(memberUpdateDTO);
+	public String update(@Valid MemberDTO memberDTO, Errors errors, Model model, Authentication auth) throws Exception{
+
+		model.addAttribute("member", memberDTO);
+		memberService.update(memberDTO);
 		
 		return "redirect:/home";
 	}

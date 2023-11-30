@@ -61,9 +61,9 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 		memberEntity.setAge(memberDTO.getAge());
 	}
 	
-//	public static MemberEntity update(MemberDTO memberDTO) {
+//	public MemberEntity update(MemberDTO memberDTO) {
 //		MemberEntity memberEntity = new MemberEntity();
-//		// memberEntity.setEmail(memberDTO.getEmail());
+//		//memberEntity.setEmail(memberDTO.getEmail());
 //		memberEntity.setNickname(memberDTO.getNickname());
 //		memberEntity.setAge(memberDTO.getAge());
 //		return memberEntity;
@@ -107,5 +107,5 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 }

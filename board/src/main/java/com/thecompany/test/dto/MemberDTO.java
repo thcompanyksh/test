@@ -23,7 +23,8 @@ public class MemberDTO {
 	private String password;
 	private String nickname;
 	private int age;
-	//private String checkedPassword;
+	private String checkedPassword;
+	private String newPassword;
 	private String role;
 	
 	

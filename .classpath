@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="board/src/main/java"/>
+	<classpathentry kind="src" path="board/src/test/java"/>
+	<classpathentry kind="src" path="jwt-securety-v1/src/main/java"/>
+	<classpathentry kind="src" path="jwt-securety-v1/src/test/java"/>
+	<classpathentry kind="src" path="jwt-securety-v2/src/main/java"/>
+	<classpathentry kind="src" path="jwt-securety-v2/src/test/java"/>
+	<classpathentry kind="src" path="members/src/main/java"/>
+	<classpathentry kind="src" path="members/src/test/java"/>
+	<classpathentry kind="lib" path="board/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="jwt-securety-v1/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="jwt-securety-v2/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="lib" path="members/gradle/wrapper/gradle-wrapper.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

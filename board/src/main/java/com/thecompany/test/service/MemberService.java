@@ -19,6 +19,8 @@ import com.thecompany.test.entity.MemberEntity;
 import com.thecompany.test.repository.MemberRepository;
 import com.thecompany.test.service.MemberService;
 
+import groovyjarjarantlr4.v4.parse.ANTLRParser.throwsSpec_return;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -26,40 +28,37 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public Long save(MemberDTO dto) {
+	public Long save(MemberDTO dto) throws Exception{
+		// 이메일 중복 테스트 로직
+		if(memberRepository.findByEmail(dto.getEmail()).isPresent()) {
+			throw new Exception("이메일이 존재합니다.");
+		}
+		// 패스워드 체크 로직 추가
+		if(!dto.getPassword().equals(dto.getCheckedPassword())) {
+			throw new Exception("비밀번호가 일치하지 않습니다.");
+		}
+		
 		return memberRepository.save(MemberEntity.builder()
 				.email(dto.getEmail())
 				.nickname(dto.getNickname())
 				.age(dto.getAge())
 				.password(bCryptPasswordEncoder.encode(dto.getPassword()))
 				.build()).getId();
-	}
+		}
 	
-	public Long update(MemberUpdateDTO memberUpdateDTO) {
-		MemberEntity memberEntity = memberRepository.findByEmail(memberUpdateDTO.getEmail()).orElseThrow(()->new IllegalIdentifierException("ss"));
+	public Long update(MemberDTO memberDTO) throws Exception {
+		//orElseThrow() -> Optional의 인자가 null일 경우 IllegalIdentifierException의 메세지를 반환해 준다.
+		MemberEntity memberEntity = memberRepository.findByEmail(memberDTO.getEmail()).orElseThrow(()->new IllegalIdentifierException("ss"));
 		
-		memberEntity.update(memberUpdateDTO.getNickname());
-		
-		return memberEntity.getId();
+		//passwordEncoder.matches(신규password, 기존 entity password)로 매칭하여 확인
+		if(!bCryptPasswordEncoder.matches(memberDTO.getNewPassword(), memberEntity.getPassword())){
+			throw new Exception("비밀번호가 일치하지 않습니다.");
+		} else {
+		memberDTO.setNewPassword(bCryptPasswordEncoder.encode(memberDTO.getNewPassword()));
+		memberEntity.update(memberDTO.getNickname());
+		memberEntity = memberRepository.save(memberEntity);
+		return memberEntity.getId();		
+		}
 	}
-	
-//	@Transactional
-//	public MemberDTO findByEmail(String email) {
-//		Optional<MemberEntity> optionalMemberEntity = memberRepository.findByEmail(email);
-//		if (optionalMemberEntity.isPresent()) {
-//			MemberEntity memberEntity = optionalMemberEntity.get();
-//			MemberDTO memberDTO = MemberDTO.toMemberDTO(memberEntity);
-//			return memberDTO;
-//		}else {
-//			return null;
-//		}
-//	}
-	
-//	public MemberDTO update(MemberDTO memberDTO) throws IOException{
-//		MemberEntity memberEntity = MemberEntity.update(memberDTO);
-//		memberRepository.save(memberEntity);
-//		
-//		return memberDTO;
-//	}
 	
 }
