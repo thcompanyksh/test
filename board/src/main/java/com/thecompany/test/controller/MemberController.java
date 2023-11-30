@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.thecompany.test.dto.MemberDTO;
 import com.thecompany.test.dto.MemberUpdateDTO;
@@ -68,4 +69,21 @@ public class MemberController {
 		return "redirect:/home";
 	}
 	
+	@GetMapping("/delete")
+	public String deleteForm() {
+		return "/member/delete";
+	}
+	
+	@PostMapping("/delete")
+	public String delete(@RequestParam String password, Model model, Authentication auth) throws Exception{
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		boolean result = memberService.delete(userDetails.getUsername(), password);
+		
+		if(result) {
+			return "redirect:/";
+		}else {
+			model.addAttribute("wrongPassowrd", "비밀번호가 맞지 않습니다.");
+			return "/member/delete";
+		}
+	}
 }

@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>thecompany</title>
+	    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 	</head>
 	<h2> 내 정보 </h2>
 	<body>
@@ -12,15 +13,15 @@
 		나이 : <input type="text" name="age" th:value="${info.age}"><br>
 		비밀번호 : <input type="password" name="newPassword"><br>
 		<input type="submit" value="수정">
-		</from>
+		</form>
 		<br>
 		<button onclick=" ">비밀번호 변경</button>
 		<br>
-		<button onclick="delete()">회원 탈퇴</button>
+		<button onclick="location.href='/delete'">회원 탈퇴</button>
 	</body>
-	<script th:inline="javascript">
-	    const delete = () => {
-	        location.href = "/delete";
-	    }
-	</script>
+<!--	<script>-->
+<!--	    const deleteReq = () => {-->
+<!--	        location.href = "/delete";-->
+<!--	    }-->
+<!--	</script>-->
 </html>

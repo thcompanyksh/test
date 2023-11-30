@@ -61,4 +61,14 @@ public class MemberService {
 		}
 	}
 	
+	public boolean delete(String email,String password) throws Exception{
+		MemberEntity memberEntity = memberRepository.findByEmail(email).orElseThrow(()->new IllegalIdentifierException("아이디가 없습니다"));
+		if(bCryptPasswordEncoder.matches(password, memberEntity.getPassword())){
+			memberRepository.delete(memberEntity);
+			return true;
+		} else {
+			throw new Exception("비밀번호가 일치하지 않습니다.");
+		}
+	}
+	
 }
