@@ -71,4 +71,18 @@ public class MemberService {
 		}
 	}
 	
+	public Long pass(MemberDTO memberDTO, String email) throws Exception{
+	    MemberEntity memberEntity = memberRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("이메일이 존재하지 않습니다."));
+
+	    if (!bCryptPasswordEncoder.matches(memberDTO.getPassword(), memberEntity.getPassword())) {
+	    	throw new Exception("비밀번호가 일치하지 않습니다.");
+	    } else {
+	    	memberDTO.setNewPassword(bCryptPasswordEncoder.encode(memberDTO.getNewPassword()));
+	    	memberEntity.updatePass(memberDTO.getNewPassword());
+	        memberRepository.save(memberEntity);
+	    }
+		return memberEntity.getId();
+
+	}
+	
 }

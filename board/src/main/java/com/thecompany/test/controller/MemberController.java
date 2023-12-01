@@ -1,5 +1,7 @@
 package com.thecompany.test.controller;
 
+import java.util.Objects;
+
 import javax.validation.Valid;
 
 import org.springframework.security.core.Authentication;
@@ -86,4 +88,31 @@ public class MemberController {
 			return "/member/delete";
 		}
 	}
+	
+	@GetMapping("/pass")
+	public String passForm() {
+		return "/member/pass";
+	}
+	
+	@PostMapping("/pass")
+	public String pass(@Valid MemberDTO memberDTO, Model model, Authentication auth) throws Exception{
+	    if (!Objects.equals(memberDTO.getNewPassword(), memberDTO.getCheckedPassword())) {
+	        model.addAttribute("dto", memberDTO);
+	        model.addAttribute("differentPassword", "비밀번호가 같지 않습니다.");
+	        return "/member/pass";
+	    }
+		
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		Long result = memberService.pass(memberDTO, userDetails.getUsername());
+		
+	    // 현재 비밀번호가 틀렸을 경우
+	    if (result == null) {
+	        model.addAttribute("dto", memberDTO);
+	        model.addAttribute("wrongPassword", "비밀번호가 맞지 않습니다.");
+	        return "/member/pass";
+	    }
+
+	    return "redirect:/home";
+	}
+	
 }

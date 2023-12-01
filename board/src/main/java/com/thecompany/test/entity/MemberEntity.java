@@ -51,7 +51,7 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 	private int age;
 	
 	@Column
-	private String role;
+	private Role role;
 	
 	public MemberEntity(MemberDTO memberDTO, String auth) {
 		MemberEntity memberEntity = new MemberEntity();
@@ -61,16 +61,12 @@ public class MemberEntity extends BaseEntity implements UserDetails{
 		memberEntity.setAge(memberDTO.getAge());
 	}
 	
-//	public MemberEntity update(MemberDTO memberDTO) {
-//		MemberEntity memberEntity = new MemberEntity();
-//		//memberEntity.setEmail(memberDTO.getEmail());
-//		memberEntity.setNickname(memberDTO.getNickname());
-//		memberEntity.setAge(memberDTO.getAge());
-//		return memberEntity;
-//	}
-	
 	public void update(String nickname) {
 		this.nickname = nickname;
+	}
+	
+	public void updatePass(String password) {
+		this.password = password;
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.security.core.userdetails.User;
 
 import com.thecompany.test.entity.MemberEntity;
+import com.thecompany.test.entity.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ public class MemberDTO {
 	private int age;
 	private String checkedPassword;
 	private String newPassword;
-	private String role;
+	private Role role;
 	
 	
 	public static MemberDTO toMemberDTO(MemberEntity memberEntity) {
