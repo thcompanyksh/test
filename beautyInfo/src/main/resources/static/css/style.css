@@ -1,0 +1,16 @@
+   .grid-container{
+    column-width:300px;
+    column-gap: 10px;
+    height: auto;
+  }
+  .grid-item {
+   /* border:1px solid rgba(0,0,0,0.2);*/
+    margin-bottom: 10px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.5);;
+    border-radius: 10px;
+  }
+  .grid-item img{
+    width:100%;
+   	display: list-item;
+    border-radius: 10px;
+  }
